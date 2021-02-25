@@ -1,0 +1,57 @@
+.footer {
+    flex: 0 0 auto;
+}
+.footer__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.rs_school {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    background-color: white;
+    border: 1px solid #595959;
+    margin-right: 15px;
+}
+
+.rs_school__link {
+    display: block;
+    height: 100%;
+}
+
+.rs_school__image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+}
+
+.github {
+    width: 56px;
+    height: 56px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1px solid #595959;
+    margin-right: 15px;
+}
+
+
+
+.footer__block {
+    animation: 18s footer ease;
+}
+
+@keyframes footer {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
