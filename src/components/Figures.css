@@ -45,12 +45,12 @@
     background-size: 100%;
     cursor: grab;
     cursor: -webkit-grab;
-    transition: all 1s ease;
-    animation: 2s start ease;
+    will-change: transform;
+    /* animation: 2s start ease; */
 }
 .fig:active {
-    background-color: rgba(0, 0, 0, 0.267);
+    /* background-color: rgba(0, 0, 0, 0.267); */
 }
-@keyframes start {
+/* @keyframes start {
     from {transform: translateX(-175%);}
-}
+} */
