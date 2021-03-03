@@ -43,7 +43,7 @@
 
 
 .footer__block {
-    animation: 18s footer ease;
+    animation: 18s footer ease-out;
 }
 
 @keyframes footer {

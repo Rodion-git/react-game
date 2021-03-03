@@ -1,5 +1,7 @@
 import React from "react";
 
+import './SideBar.css';
+
 const SideBar: React.FC = (): JSX.Element => {
   return (
     <div className="card">
@@ -7,16 +9,6 @@ const SideBar: React.FC = (): JSX.Element => {
       <div className="card-body">
         <table className="table table-hover">
             <tbody>
-                <tr>
-                    <td>1.</td>
-                    <td>E5</td>
-                    <td>F5</td>
-                </tr>
-                <tr>
-                    <td>2.</td>
-                    <td>E5</td>
-                    <td>F5</td>
-                </tr>
             </tbody>
         </table>
       </div>
