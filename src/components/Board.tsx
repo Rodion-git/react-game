@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import Figures from "./Figures";
 import ResizeBoard from "./ResizeBoard";
+import { move } from "./functions/move";
 import { cordinates, icon } from "./Helpers";
 import "./Board.css";
 
@@ -18,16 +19,19 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
     figY: number = 0,
     step: number = 0,
     element: any = "",
-    img = new Image();
+    img = new Image(),
+    moves: [number] = [0];
   const handlerDragStart = (event: any): void | undefined => {
     let { target, pageX, pageY } = event;
     if (target.classList.contains("board")) return;
-    event.dataTransfer.setDragImage(img,0,0);
+    event.dataTransfer.setDragImage(img, 0, 0);
     element = target;
     element.classList.add("dragging");
     let id = element.dataset.id,
       position = element.getBoundingClientRect(),
-      width = element.clientWidth;
+      width = element.clientWidth,
+      fig = element.dataset.fig;
+    moves = move(fig, id);
     if (width / 100 < 1) step = 1 + (1 - width / 100);
     else step = width / 100;
     figX = cordinates[id][0] + (pageX - position.x - width / 2) * step;
@@ -38,7 +42,7 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
   };
   const handlerDrag = (event: any): void | undefined => {
     const { pageX, pageY } = event;
-    if (pageX === 0 && pageY === 0 || !element ) return;
+    if ((pageX === 0 && pageY === 0) || !element) return;
     let mathX: number = figX + (pageX - x) * step;
     let mathY: number = figY + (pageY - y) * step;
     figX = mathX;
@@ -48,9 +52,10 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
     element.style.transform = `translate(${mathX}%,${mathY}%)`;
   };
   const handlerDragEnd = (event: any): void => {
-    cordinates.forEach((item, index) => {
+    console.log(moves)
+    moves.forEach((item) => {
       if (
-        JSON.stringify(item) ===
+        JSON.stringify(cordinates[item]) ===
         JSON.stringify([
           Math.round(figX / 100) * 100,
           Math.round(figY / 100) * 100,
@@ -58,18 +63,40 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
       ) {
         element.className = element.className.replace(
           /square-\d+ dragging/,
-          `square-${index}`
+          `square-${item}`
         );
         let id = Number(element.dataset.id);
-        if ( id !== index) {
+        if (id !== item) {
           const arr = [...figures];
-          arr[index] = arr[id];
+          arr[item] = arr[id];
           arr[id] = null;
-          element.setAttribute("data-id", index);
+          element.setAttribute("data-id", item);
           setFigures(arr);
         }
       }
     });
+    // cordinates.forEach((item: [number, number], index: number) => {
+    //   if (
+    //     JSON.stringify(item) ===
+    //     JSON.stringify([
+    //       Math.round(figX / 100) * 100,
+    //       Math.round(figY / 100) * 100,
+    //     ])
+    //   ) {
+    //     element.className = element.className.replace(
+    //       /square-\d+ dragging/,
+    //       `square-${index}`
+    //     );
+    //     let id = Number(element.dataset.id);
+    //     if (id !== index) {
+    //       const arr = [...figures];
+    //       arr[index] = arr[id];
+    //       arr[id] = null;
+    //       element.setAttribute("data-id", index);
+    //       setFigures(arr);
+    //     }
+    //   }
+    // });
     element.style.transform = "";
   };
   const start = (

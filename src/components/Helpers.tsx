@@ -64,7 +64,7 @@ const board: any = [
   "wn",
   "wt",
 ];
-const cordinates = [
+const cordinates: any = [
   [0, 0],
   [100, 0],
   [200, 0],
