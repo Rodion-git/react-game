@@ -16,36 +16,38 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
     y: number = 0,
     figX: number = 0,
     figY: number = 0,
-    step: number = 0;
+    step: number = 0,
+    element: any = "",
+    img = new Image();
   const handlerDragStart = (event: any): void | undefined => {
     let { target, pageX, pageY } = event;
-    console.log(target);
     if (target.classList.contains("board")) return;
-    target.classList.add("dragging");
-    let id = target?.dataset.id,
-      position = target.getBoundingClientRect(),
-      width = target.clientWidth;
+    event.dataTransfer.setDragImage(img,0,0);
+    element = target;
+    element.classList.add("dragging");
+    let id = element.dataset.id,
+      position = element.getBoundingClientRect(),
+      width = element.clientWidth;
     if (width / 100 < 1) step = 1 + (1 - width / 100);
     else step = width / 100;
     figX = cordinates[id][0] + (pageX - position.x - width / 2) * step;
     figY = cordinates[id][1] + (pageY - position.y - width / 2) * step;
     x = pageX;
     y = pageY;
-    target.style.transform = `translate(${figX}%,${figY}%)`;
+    element.style.transform = `translate(${figX}%,${figY}%)`;
   };
   const handlerDrag = (event: any): void | undefined => {
-    const { target, pageX, pageY } = event;
-    if (pageX === 0 && pageY === 0) return;
+    const { pageX, pageY } = event;
+    if (pageX === 0 && pageY === 0 || !element ) return;
     let mathX: number = figX + (pageX - x) * step;
     let mathY: number = figY + (pageY - y) * step;
     figX = mathX;
     figY = mathY;
     x = pageX;
     y = pageY;
-    target.style.transform = `translate(${mathX}%,${mathY}%)`;
+    element.style.transform = `translate(${mathX}%,${mathY}%)`;
   };
   const handlerDragEnd = (event: any): void => {
-    let { target } = event;
     cordinates.forEach((item, index) => {
       if (
         JSON.stringify(item) ===
@@ -54,19 +56,21 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
           Math.round(figY / 100) * 100,
         ])
       ) {
-        target.className = target.className.replace(
+        element.className = element.className.replace(
           /square-\d+ dragging/,
           `square-${index}`
         );
-        let id = target.dataset.id;
-        const arr = [...figures];
-        arr[index] = arr[id];
-        arr[id] = null;
-        target.setAttribute("data-id", index);
-        setFigures(arr);
+        let id = Number(element.dataset.id);
+        if ( id !== index) {
+          const arr = [...figures];
+          arr[index] = arr[id];
+          arr[id] = null;
+          element.setAttribute("data-id", index);
+          setFigures(arr);
+        }
       }
     });
-    target.style.transform = "";
+    element.style.transform = "";
   };
   const start = (
     <div className="start-wrapper">
