@@ -20,7 +20,7 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
     step: number = 0,
     element: any = "",
     img = new Image(),
-    moves: [number] = [0];
+    moves: any = [0];
   const handlerDragStart = (event: any): void | undefined => {
     let { target, pageX, pageY } = event;
     if (target.classList.contains("board")) return;
@@ -52,8 +52,8 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
     element.style.transform = `translate(${mathX}%,${mathY}%)`;
   };
   const handlerDragEnd = (event: any): void => {
-    console.log(moves)
-    moves.forEach((item) => {
+    console.log(moves);
+    moves.forEach((item: number) => {
       if (
         JSON.stringify(cordinates[item]) ===
         JSON.stringify([
@@ -75,28 +75,6 @@ const Board: React.FC<BoardProps> = ({ beginSt, beginH }): JSX.Element => {
         }
       }
     });
-    // cordinates.forEach((item: [number, number], index: number) => {
-    //   if (
-    //     JSON.stringify(item) ===
-    //     JSON.stringify([
-    //       Math.round(figX / 100) * 100,
-    //       Math.round(figY / 100) * 100,
-    //     ])
-    //   ) {
-    //     element.className = element.className.replace(
-    //       /square-\d+ dragging/,
-    //       `square-${index}`
-    //     );
-    //     let id = Number(element.dataset.id);
-    //     if (id !== index) {
-    //       const arr = [...figures];
-    //       arr[index] = arr[id];
-    //       arr[id] = null;
-    //       element.setAttribute("data-id", index);
-    //       setFigures(arr);
-    //     }
-    //   }
-    // });
     element.style.transform = "";
   };
   const start = (

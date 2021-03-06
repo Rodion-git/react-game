@@ -191,7 +191,7 @@ const move = (figure: any, position: number) => {
       }
     });
   });
-  return result;
+  return Array.from(new Set(result));
 };
 
 export { move };
